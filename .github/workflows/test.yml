@@ -18,7 +18,7 @@ jobs:
 
     steps:
     - name: build-backend
-    - run: echo "backend build done"
+      run: echo "backend build done"
 
 
 
