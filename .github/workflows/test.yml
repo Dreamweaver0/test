@@ -6,6 +6,14 @@ on:
   push:  
       
   workflow_dispatch:
+    inputs:
+      DEPLOY_TARGET:
+        choice:
+        type: choice
+        options:
+          - deploy-backend-stage 
+          - deploy-backend-master
+        required: true
 
 jobs:
   build-backend:
@@ -18,7 +26,7 @@ jobs:
     - name: build-backend
       run: echo "backend build done"
   
-  deploy-backend-stage-from-any-branch:
+  deploy-backend-stage:
 
     runs-on: ubuntu-22.04
     needs: [build-backend]
@@ -33,7 +41,14 @@ jobs:
         fi
         echo "job done"
 
+  deploy-backend-master:
+    runs-on: ubuntu-22.04
+    needs: [build-backend]
+    if: (github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch')
 
+    steps:
+    - name: deploy master
+      run: echo "done"
 
 
 
