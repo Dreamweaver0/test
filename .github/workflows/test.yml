@@ -1,0 +1,26 @@
+
+
+name: Build and deploy 
+
+on:
+  push:  
+  schedule:
+    - cron: 0 18 * * *
+      
+  workflow_dispatch:
+
+jobs:
+  build-backend:
+
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+
+    steps:
+    - name: build-backend
+    - run: echo "backend build done"
+
+
+
+
+
