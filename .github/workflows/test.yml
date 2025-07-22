@@ -14,6 +14,14 @@ on:
           - deploy-backend-stage 
           - deploy-backend-master
         required: true
+    inputs:
+      DEPLOY_TARGET:
+        choice:
+        type: choice
+        options:
+          - deploy-backend-stage 
+          - deploy-backend-master
+        required: true
 
 jobs:
   build-backend:
@@ -27,10 +35,9 @@ jobs:
       run: echo "backend build done"
   
   deploy-backend-stage:
-
     runs-on: ubuntu-22.04
     needs: [build-backend]
-    if: github.event_name == 'workflow_dispatch'
+    if: ${{ github.event.inputs.SERVICE_NAME   == 'deploy-backend-stage'}}
 
     steps:
     - name: deploy-backend-stage-from-any-branch
@@ -44,8 +51,11 @@ jobs:
   deploy-backend-master:
     runs-on: ubuntu-22.04
     needs: [build-backend]
-    if: (github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch')
+    if: (github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch') && ${{ github.event.inputs.SERVICE_NAME   == 'deploy-backend-master'}}
 
+    steps:
+    - name: deploy master
+      run: echo "done"
     steps:
     - name: deploy master
       run: echo "done"
