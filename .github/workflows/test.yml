@@ -14,6 +14,14 @@ on:
           - deploy-backend-stage 
           - deploy-backend-master
         required: true
+    inputs:
+      DEPLOY_TARGET:
+        choice:
+        type: choice
+        options:
+          - deploy-backend-stage 
+          - deploy-backend-master
+        required: true
 
 jobs:
   build-backend:
@@ -45,6 +53,9 @@ jobs:
     needs: [build-backend]
     if: (github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch') && ${{ github.event.inputs.SERVICE_NAME   == 'deploy-backend-master'}}
 
+    steps:
+    - name: deploy master
+      run: echo "done"
     steps:
     - name: deploy master
       run: echo "done"
