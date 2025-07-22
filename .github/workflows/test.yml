@@ -1,0 +1,39 @@
+
+
+name: Build and deploy 
+
+on:
+  push:  
+      
+  workflow_dispatch:
+
+jobs:
+  build-backend:
+
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+
+    steps:
+    - name: build-backend
+      run: echo "backend build done"
+  
+  deploy-backend-stage-from-any-branch:
+
+    runs-on: ubuntu-22.04
+    needs: [build-backend]
+    if: github.event_name == 'workflow_dispatch'
+
+    steps:
+    - name: deploy-backend-stage-from-any-branch
+      run: |
+        if [[ "${{ github.ref }}" == 'refs/heads/development' || "${{ github.ref }}" == 'refs/heads/master' ]]; then 
+          echo "This job is not configured to run on this branch."
+          exit 0
+        fi
+        echo "job done"
+
+
+
+
+
