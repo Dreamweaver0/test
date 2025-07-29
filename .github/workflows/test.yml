@@ -14,14 +14,6 @@ on:
           - deploy-backend-stage 
           - deploy-backend-master
         required: true
-    inputs:
-      DEPLOY_TARGET:
-        choice:
-        type: choice
-        options:
-          - deploy-backend-stage 
-          - deploy-backend-master
-        required: true
 
 jobs:
   build-backend:
@@ -42,6 +34,7 @@ jobs:
     steps:
     - name: deploy-backend-stage-from-any-branch
       run: |
+        echo "deploying on STAGE ENVIROMENT"
         if [[ "${{ github.ref }}" == 'refs/heads/development' || "${{ github.ref }}" == 'refs/heads/master' ]]; then 
           echo "This job is not configured to run on this branch."
           exit 0
@@ -55,10 +48,9 @@ jobs:
 
     steps:
     - name: deploy master
-      run: echo "done"
-    steps:
-    - name: deploy master
-      run: echo "done"
+      run: |
+        echo "deploying on MASTER ENVIROMENT"
+        echo "done"
 
 
 
